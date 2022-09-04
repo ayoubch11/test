@@ -1,0 +1,31 @@
+locals {
+  tags = {}
+}
+##################################################
+module "FR-RG-Vnet-MCC-SOC-WE-NONPRD" {
+  source = "git::https://deloittefrance.visualstudio.com/DSI-Cloud%20Hosting/_git/Terraform_Azure_Module_NSG"
+
+  nsg_name                = "FR-MCC-SOC-WE-NONPRD-NSG"
+  resource_group_name_nsg = "FR-RG-Vnet-MCC-SOC-WE-NONPRD"
+  location                = "westeurope"
+  tags                    = local.tags
+  security_rules = [
+    {
+      name                   = "allow_to_all",
+      priority               = "100"
+      direction              = "Inbound"
+      access                 = "Allow"
+      protocol               = "Tcp"
+      source_port_range      = "*"
+      destination_port_range = "*"
+      #source_address_prefix      = "10.0.0.0/8 "
+      destination_address_prefix = "*"
+    },
+  ]
+  associated_subnet_id = [
+"/subscriptions/3931f508-16f4-4986-975e-dce06750aa20/resourceGroups/FR-RG-Vnet-MCC-SOC-WE-NONPRD/providers/Microsoft.Network/virtualNetworks/FR-Vnet-MCC-SOC-WE-NONPRD/subnets/FR-Snet-MCC-SOC1-WE-NONPRD",
+"/subscriptions/3931f508-16f4-4986-975e-dce06750aa20/resourceGroups/FR-RG-Vnet-MCC-SOC-WE-NONPRD/providers/Microsoft.Network/virtualNetworks/FR-Vnet-MCC-SOC-WE-NONPRD/subnets/FR-Snet-MCC-Alliances-WE-NONPRD",
+"/subscriptions/3931f508-16f4-4986-975e-dce06750aa20/resourceGroups/FR-RG-Vnet-MCC-SOC-WE-NONPRD/providers/Microsoft.Network/virtualNetworks/FR-Vnet-MCC-SOC-WE-NONPRD/subnets/FR-Snet-MCC-SOC2-WE-NONPRD",
+]
+
+}
